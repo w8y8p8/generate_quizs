@@ -112,14 +112,24 @@ def saveExpression(Expressions,docxName):
     total = len(Expressions)
     print 'Total Expressions are: '+str(total)
     
+    header = document.sections[0].header
+    #header.paragraphs[0].text=u'班级：'
+    head_table = header.add_table(rows=1, cols=3, width=Inches(10))
+    hdr_cells = head_table.rows[0].cells
+    hdr_cells[0].text = u'班级：'
+    hdr_cells[1].text = u'姓名：'
+    hdr_cells[2].text = u'学号：'
+    
     index=0
     while index<total:
         table = document.add_table(rows=25, cols=4)
         for i in range(25):
             for j in range(4):
-                table.rows[i].cells[j].text = Expressions[index]
-                index = index+1
-        document.add_page_break()
+                if index<total:
+                    table.rows[i].cells[j].text = Expressions[index]
+                    index = index+1
+        if index<total:
+            document.add_page_break()
     document.save(docxName)
 
 if __name__=="__main__":
